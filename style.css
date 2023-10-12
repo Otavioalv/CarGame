@@ -1,0 +1,12 @@
+html {
+    background-color: black;
+}
+
+.screen {
+    background-color: aliceblue;
+    
+    margin: 5em auto;
+    width: 700px;
+    height: 750px;
+    
+}
