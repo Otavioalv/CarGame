@@ -26,10 +26,38 @@ html {
     width: var(--routeWidth);
 }
 
+/* -------------------scenary--------------- */
+
 .scenary {
+    display: flex;
+    flex-direction: column-reverse;
     background-color: aqua;
     width: var(--scenaryWidth);
+    /* overflow: hidden; */
 }
+
+.scenaryMonitor {
+    margin: 0;
+    width: 100%;
+}
+
+
+/* @keyframes moveRight {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(10px);
+    }
+  }
+  
+  .animate{
+    animation-name: moveRight;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+  } */
+/* -----------------end scenary---------------- */
 
 .hud {
     background-color: rgb(44, 30, 235);
