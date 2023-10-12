@@ -8,7 +8,8 @@ html {
     --screenSize: 750px;
     --routeWidth: 10%;  
     --scenaryWidth: calc(82% - var(--routeWidth));
-    --hudWidth: calc( 100% - var(--scenaryWidth))
+    --hudWidth: calc( 100% - var(--scenaryWidth));
+    --boxPlayerWidth: 491px;
 }
 
 .screen {
@@ -39,6 +40,18 @@ html {
 .scenaryMonitor {
     margin: 0;
     width: 100%;
+}
+
+.boxPlayer {
+    position: absolute;
+    height: 200px;
+    width: var(--boxPlayerWidth);
+    background-color: aqua;
+}
+
+.player {
+    position: relative;
+    width: 55px;
 }
 
 

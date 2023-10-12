@@ -4,7 +4,9 @@ function start() {
 
     const scenary = new Scenary(scenaryElement, 1000);
 
-    scenary.speed(); 
+    // scenary.speed(); 
+    
+    scenary.breake();
     scenary.animate();
 }
 
@@ -18,6 +20,10 @@ class Scenary {
         this.vel -= 500;
     }
 
+    breake() {
+        this.vel +=500;
+    }
+
     animate() {
         const keyframes = [
         { transform: 'translateY(0)' },
@@ -26,43 +32,20 @@ class Scenary {
 
         const options = {
             duration: this.vel,
-            fill: 'forwards'
+            iterationCount: "infinite",
         };
 
-        this.scenary.forEach(element => {
-            const animation = element.animate(keyframes, options);
-            animation.play();
-        });
-
-        setTimeout(() => {
-            this.scrolling();
-        }, this.vel);
-
-        /* 
-        function minhaFuncao() {
-          console.log("Esta função foi executada após 1 segundo.");
+        const repeat = () => {
+            this.scenary.forEach(element => {
+                const animation = element.animate(keyframes, options);
+                animation.play();
+            });
         }
 
-        // Executa a função 'minhaFuncao' após 1000 milissegundos (1 segundo)
-        setTimeout(minhaFuncao, 1000);
-        */
-    }
+        const repeatScenary= setInterval(repeat, this.vel);
 
-    scrolling() {
-        console.log(this.scenary[0])
-        console.log(this.scenary[1])
-        
-
-        /* 
-            [0, 1, 2]
-
-            1 = 0 1 2
-
-            2= 1 2 apaga o 0
-
-            3 = 0 1 2 recoloca ele no final
-
-            4 = repete
-        */
+        setTimeout(() => {
+            clearInterval(repeatScenary);
+        }, 60000)
     }
 }
