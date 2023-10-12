@@ -2,11 +2,36 @@ html {
     background-color: black;
 }
 
+:root {
+    --tamanho-1: 24px;
+
+    --screenSize: 750px;
+    --routeWidth: 10%;  
+    --scenaryWidth: calc(82% - var(--routeWidth));
+    --hudWidth: calc( 100% - var(--scenaryWidth))
+}
+
 .screen {
+    display: flex;
     background-color: aliceblue;
     
     margin: 5em auto;
-    width: 700px;
-    height: 750px;
+    width: var(--screenSize);
+    height: var(--screenSize);
     
+}
+
+.route {
+    background-color: brown;
+    width: var(--routeWidth);
+}
+
+.scenary {
+    background-color: aqua;
+    width: var(--scenaryWidth);
+}
+
+.hud {
+    background-color: rgb(44, 30, 235);
+    width: var(--hudWidth);
 }
