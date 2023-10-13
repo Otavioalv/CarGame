@@ -51,7 +51,8 @@ html {
 
 .player {
     position: relative;
-    width: 55px;
+    width: 45px;
+    left: 150px;
 }
 
 
