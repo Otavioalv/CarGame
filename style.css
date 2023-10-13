@@ -34,7 +34,7 @@ html {
     flex-direction: column-reverse;
     background-color: aqua;
     width: var(--scenaryWidth);
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .scenaryMonitor {
@@ -46,7 +46,7 @@ html {
     position: absolute;
     height: 200px;
     width: var(--boxPlayerWidth);
-    background-color: aqua;
+    /* background-color: aqua; */
 }
 
 .player {
