@@ -1,21 +1,31 @@
-var pause = false;
+var pause = true; // false 
+var movement = true;
+const timer = 60000;
+const delay = 1500;
 
 function start() {
     /* const scenaryElement = document.getElementById("idScenaryMonitor"); */
     const scenaryElement = document.querySelectorAll(".scenaryMonitor"); // scenary
     const playerElement = document.getElementById("iPlayer"); // player
+    const countCarElement = document.getElementById("iCountCar");
+
     const startBtnElement = document.getElementById("iStartBtn");
 
 
-    const scenary = new Scenary(scenaryElement, 1000);
+    const scenary = new Scenary(scenaryElement, delay, timer); // cenary element, velocity
     const player = new Player(playerElement, 3, {'L': 118, 'R': 332}); // (elemento Playe, velocidade car, parede esqueda e direita em objeto)
+    const bar = new CountBar(countCarElement, delay, timer); // elemento carro,  velMesmo do Scenary, duração 
 
     
     // startBtnElement.style.display = "none";
-    scenary.breake();
     scenary.animate();
+    bar.bar();
 
-    player.move();
+    // player.move();
+
+    if(pause) {
+        player.move();
+    }
 }
 
 
@@ -24,9 +34,10 @@ function stopp() {
 }
 
 class Scenary {
-    constructor(scenary, vel) {
+    constructor(scenary, vel, time) {
         this.scenary = scenary;
         this.vel = vel;
+        this.time = time;
     }
 
     speed() {
@@ -39,11 +50,11 @@ class Scenary {
 
     animate() {
 
-        if(pause)
+        /* if(pause)
             pause = false;
         else 
-            pause = true;
-
+            pause = true; // pause TOTAL
+ */
 
         const keyframes = [
         { transform: 'translateY(0)' },
@@ -74,7 +85,6 @@ class Scenary {
                 } else {
                     const newAnimation = element.animate(keyframes, options);
                     newAnimation.play();
-                    console.log("animação ", pause)
                 }
             })
         }
@@ -84,7 +94,7 @@ class Scenary {
         setTimeout(() => {
             clearInterval(repeatScenary);
             pause = false;
-        }, 60000)
+        }, this.time)
     }
 }
 
@@ -110,15 +120,14 @@ class Player {
 
 
                 function movePlayer(direction) {
-                        if(direction === "L" && player.offsetLeft > wall.L) 
+                        if(direction === "L" && player.offsetLeft > wall.L /* && pause */) 
                             playerPosition -= vel;
-                        else if(direction === "R" && player.offsetLeft < wall.R) 
+                        else if(direction === "R" && player.offsetLeft < wall.R /* && pause */) 
                             playerPosition += vel;
-                         
 
                     player.style.left = playerPosition + "px";
                     
-                    console.log("Player p: ", player.offsetLeft, "Direction: ", direction, "Veloci: ", vel, "wall RL: ", wall, "pause: ", pause);
+                    // console.log("Player p: ", player.offsetLeft, "Direction: ", direction, "Veloci: ", vel, "wall RL: ", wall, "pause: ", pause);
                 }
         
                 /* function movePlayLeft() {
@@ -172,14 +181,9 @@ class Player {
                         isMovR = false;
                 };
 
-                if(!pause){
-                    document.removeEventListener("keydown", keyDownHandler);
-                    document.removeEventListener("keyup", keyUpHandler);
-                } else {
-                    document.addEventListener("keydown", keyDownHandler);
-                    document.addEventListener("keyup", keyUpHandler);
-                }
-                
+               
+                document.addEventListener("keydown", keyDownHandler);
+                document.addEventListener("keyup", keyUpHandler);
 
                 function loop() {
                     // if(isMovR)
@@ -187,10 +191,12 @@ class Player {
                     // if(isMovL)
                     //     movePlayLeft();
 
-                    if(isMovL) 
-                        movePlayer("L");
-                    if(isMovR)
-                        movePlayer("R");
+                    if(pause) {
+                        if(isMovL) 
+                            movePlayer("L");
+                        if(isMovR)
+                            movePlayer("R");
+                    }
 
                     requestAnimationFrame(loop);
                 }
@@ -199,3 +205,32 @@ class Player {
     }
 }
 
+class CountBar {
+    constructor(car, count, duration) {
+        this.car = car;
+        this.count = count;
+        this.duration = duration;
+    }
+
+    bar() {
+        const positionCar = parseFloat(getComputedStyle(this.car).getPropertyValue("bottom"));
+
+        const keyframes = [ 
+            {transform: 'translateY(0)',},
+            {transform: 'translateY(-580px)'}
+        ];
+
+        const options = {
+            duration: this.duration,
+            fill: 'forwards'
+        };
+
+        const animation = () => {
+            this.car.animate(keyframes, options); 
+            animation.play();
+        }
+
+        setTimeout(animation, this.count)
+
+    }
+}
