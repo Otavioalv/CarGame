@@ -1,16 +1,26 @@
+var pause = false;
+
 function start() {
     /* const scenaryElement = document.getElementById("idScenaryMonitor"); */
     const scenaryElement = document.querySelectorAll(".scenaryMonitor"); // scenary
-    const playerElement = document.getElementById("iPlayer");
+    const playerElement = document.getElementById("iPlayer"); // player
+    const startBtnElement = document.getElementById("iStartBtn");
+
 
     const scenary = new Scenary(scenaryElement, 1000);
     const player = new Player(playerElement, 3, {'L': 118, 'R': 332}); // (elemento Playe, velocidade car, parede esqueda e direita em objeto)
 
     
+    // startBtnElement.style.display = "none";
     scenary.breake();
     scenary.animate();
 
     player.move();
+}
+
+
+function stopp() {
+    
 }
 
 class Scenary {
@@ -28,6 +38,13 @@ class Scenary {
     }
 
     animate() {
+
+        if(pause)
+            pause = false;
+        else 
+            pause = true;
+
+
         const keyframes = [
         { transform: 'translateY(0)' },
         { transform: 'translateY(100%)' }
@@ -38,17 +55,35 @@ class Scenary {
             iterationCount: "infinite",
         };
 
-        const repeat = () => {
+        /* const repeat = () => {
             this.scenary.forEach(element => {
                 const animation = element.animate(keyframes, options);
                 animation.play();
             });
         }
 
-        const repeatScenary= setInterval(repeat, this.vel);
+        const repeatScenary= setInterval(repeat, this.vel) */
+
+        var repeatScenary;
+
+        const repeat = () => {
+            this.scenary.forEach(element => {
+                if(!pause) {
+                        clearInterval(repeatScenary);
+                    console.log(pause)
+                } else {
+                    const newAnimation = element.animate(keyframes, options);
+                    newAnimation.play();
+                    console.log("animação ", pause)
+                }
+            })
+        }
+
+        repeatScenary = setInterval(repeat, this.vel)
 
         setTimeout(() => {
             clearInterval(repeatScenary);
+            pause = false;
         }, 60000)
     }
 }
@@ -64,7 +99,7 @@ class Player {
     move() {
         /* 
             parede esquerda: 118px
-            parede direita: 322px
+            parede direita: 332px
         */
         moveLR(this.player, this.vel, this.wall);
 
@@ -79,10 +114,11 @@ class Player {
                             playerPosition -= vel;
                         else if(direction === "R" && player.offsetLeft < wall.R) 
                             playerPosition += vel;
+                         
 
                     player.style.left = playerPosition + "px";
                     
-                    //console.log("Player p: ", player.offsetLeft, "Direction: ", direction, "Veloci: ", vel, "wall RL: ", wall);
+                    console.log("Player p: ", player.offsetLeft, "Direction: ", direction, "Veloci: ", vel, "wall RL: ", wall, "pause: ", pause);
                 }
         
                 /* function movePlayLeft() {
@@ -96,8 +132,10 @@ class Player {
                     player.style.left = playerPosition + "px";
                     console.log(player.offsetLeft);
                 } */
+
+
         
-                document.addEventListener("keydown", (event) => {
+                /* document.addEventListener("keydown", (event) => {
                     if(event.key === "ArrowLeft") 
                         isMovL = true;
                     
@@ -112,7 +150,37 @@ class Player {
                     if(event.key === "ArrowRight") 
                         isMovR = false;
                 });
-        
+                
+                if(pause){ 
+                    removeEventListener("keydown");
+                    removeEventListener("keyup");
+                } */
+
+                const keyDownHandler = (event) => {
+                    if(event.key === "ArrowLeft") 
+                        isMovL = true;
+                    
+                    if(event.key === "ArrowRight")
+                        isMovR = true;
+                };
+
+                const keyUpHandler = (event) => {
+                    if(event.key === "ArrowLeft") {
+                        isMovL = false;
+                    }
+                    if(event.key === "ArrowRight") 
+                        isMovR = false;
+                };
+
+                if(!pause){
+                    document.removeEventListener("keydown", keyDownHandler);
+                    document.removeEventListener("keyup", keyUpHandler);
+                } else {
+                    document.addEventListener("keydown", keyDownHandler);
+                    document.addEventListener("keyup", keyUpHandler);
+                }
+                
+
                 function loop() {
                     // if(isMovR)
                     //     movePlayRight();
