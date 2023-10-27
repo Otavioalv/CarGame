@@ -187,7 +187,7 @@ class Enemies {
     constructor(enemiesBG, cont) {
         this.enemiesBG = enemiesBG;
         this.cont = cont;
-        this.test = [true, true, true, true, true];
+        this.carUtil = [true, true, true, true, true, true, true, true, true, true];
     }
 
     moveEnemie(enemie) {
@@ -206,6 +206,7 @@ class Enemies {
             enemie.animate(keyframes, options); // tese
         }
 
+        
         setTimeout(animation, 500);
     }
 
@@ -215,37 +216,27 @@ class Enemies {
         
 
 
-        var randomTimer = Math.floor(Math.random() * (2000 - 1000 + 1) + 100);
-        // var randomCar = Math.floor(Math.random() * (4 - 0 + 1));
+        var randomTimer = Math.floor(Math.random() * (2000 - 1000 + 1) + 100); // 2000 1000 100
+    
         var randomCar;
 
-        // this.test[randomCar] = false;
-
-        
-        
-        let tentativas = 0;
-        const limiteTentativas = 1000; // Define um limite máximo de tentativas
+        var tentativas = 0;
+        const limiteTentativas = 1000; 
 
 
 
         do {    
-            randomCar = Math.floor(Math.random() * (4 - 0 + 1));
-            console.log(this.test[randomCar], randomCar);
+            randomCar = Math.floor(Math.random() * (9 - 0 + 1));
 
-            // tentativas++;
-            // if (tentativas >= limiteTentativas) {
-            //     // Saia do loop se o limite máximo de tentativas for atingido
-            //     break;
-            // }
-        } while(!this.test[randomCar])
+            tentativas++;
+            if (tentativas >= limiteTentativas) {
+                break;
+            }
+        } while(!this.carUtil[randomCar])
  
-        test2(this.test, randomCar, this.cont);
-        console.log(randomCar, randomTimer);
-        console.log(this.test);
+        carInutilize(this.carUtil, randomCar, this.cont);
 
-        
-
-        function test2(test, b, timer) {
+        function carInutilize(test, b, timer) {
             if(test[b]) {
                 test[b] = false
 
@@ -254,23 +245,12 @@ class Enemies {
                 }, 500 + timer);
             } 
         } 
-    
 
-
-        setTimeout(() => {
-            // this.enemiesBG.innerHTML += `<img class="enemieCar" src="./sprites//spriteEnemy.png" alt="enemie">`
-            
-            const enemies = this.enemiesBG.querySelectorAll("img"); 
-            // const lastEnemie = enemies[enemies.length - 1];
-            // console.log(lastEnemie);
-            
+        setTimeout(() => {  
+            const enemies = this.enemiesBG.querySelectorAll("img");             
             this.moveEnemie(enemies[randomCar]);
-
             if(pause)
                 this.spawnEnemis();
         }, randomTimer);
-
-        //const wid = getComputedStyle(this.enemiesBG).getPropertyValue("width");
-        // console.log(wid);
     }
 }
