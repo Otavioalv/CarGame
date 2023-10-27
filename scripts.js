@@ -21,7 +21,7 @@ function start() {
     scenary.animate();
     bar.bar();
 
-    // player.move();
+    // player.move();-
 
     if(pause) {
         player.move();
