@@ -8,6 +8,7 @@ function start() {
     const scenaryElement = document.querySelectorAll(".scenaryMonitor"); // scenary
     const playerElement = document.getElementById("iPlayer"); // player
     const countCarElement = document.getElementById("iCountCar");
+    const enemiesElement = document.querySelector(".enemies");
 
     const startBtnElement = document.getElementById("iStartBtn");
 
@@ -15,8 +16,7 @@ function start() {
     const scenary = new Scenary(scenaryElement, delay, timer); // cenary element, velocity
     const player = new Player(playerElement, 3, {'L': 118, 'R': 332}); // (elemento Playe, velocidade car, parede esqueda e direita em objeto)
     const bar = new CountBar(countCarElement, delay, timer); // elemento carro,  velMesmo do Scenary, duração 
-
-    
+    const enemies = new Enemies(enemiesElement, delay);
     // startBtnElement.style.display = "none";
     scenary.animate();
     bar.bar();
@@ -26,6 +26,8 @@ function start() {
     if(pause) {
         player.move();
     }
+
+    enemies.spawnEnemis();
 }
 
 
@@ -50,11 +52,6 @@ class Scenary {
 
     animate() {
 
-        /* if(pause)
-            pause = false;
-        else 
-            pause = true; // pause TOTAL
- */
 
         const keyframes = [
         { transform: 'translateY(0)' },
@@ -65,15 +62,6 @@ class Scenary {
             duration: this.vel,
             iterationCount: "infinite",
         };
-
-        /* const repeat = () => {
-            this.scenary.forEach(element => {
-                const animation = element.animate(keyframes, options);
-                animation.play();
-            });
-        }
-
-        const repeatScenary= setInterval(repeat, this.vel) */
 
         var repeatScenary;
 
@@ -94,7 +82,7 @@ class Scenary {
         setTimeout(() => {
             clearInterval(repeatScenary);
             pause = false;
-        }, this.time)
+        }, this.time + 1300)
     }
 }
 
@@ -130,40 +118,6 @@ class Player {
                     // console.log("Player p: ", player.offsetLeft, "Direction: ", direction, "Veloci: ", vel, "wall RL: ", wall, "pause: ", pause);
                 }
         
-                /* function movePlayLeft() {
-                    playerPosition -= vel;
-                    player.style.left = playerPosition + "px";
-                    console.log(player.offsetLeft);
-                }
-
-                function movePlayRight() {
-                    playerPosition += vel;
-                    player.style.left = playerPosition + "px";
-                    console.log(player.offsetLeft);
-                } */
-
-
-        
-                /* document.addEventListener("keydown", (event) => {
-                    if(event.key === "ArrowLeft") 
-                        isMovL = true;
-                    
-                    if(event.key === "ArrowRight")
-                        isMovR = true;
-                })
-        
-                document.addEventListener("keyup", (event) => {
-                    if(event.key === "ArrowLeft") {
-                        isMovL = false;
-                    }
-                    if(event.key === "ArrowRight") 
-                        isMovR = false;
-                });
-                
-                if(pause){ 
-                    removeEventListener("keydown");
-                    removeEventListener("keyup");
-                } */
 
                 const keyDownHandler = (event) => {
                     if(event.key === "ArrowLeft") 
@@ -186,11 +140,6 @@ class Player {
                 document.addEventListener("keyup", keyUpHandler);
 
                 function loop() {
-                    // if(isMovR)
-                    //     movePlayRight();
-                    // if(isMovL)
-                    //     movePlayLeft();
-
                     if(pause) {
                         if(isMovL) 
                             movePlayer("L");
@@ -227,10 +176,101 @@ class CountBar {
 
         const animation = () => {
             this.car.animate(keyframes, options); 
-            animation.play();
         }
 
         setTimeout(animation, this.count)
 
+    }
+}
+
+class Enemies {
+    constructor(enemiesBG, cont) {
+        this.enemiesBG = enemiesBG;
+        this.cont = cont;
+        this.test = [true, true, true, true, true];
+    }
+
+    moveEnemie(enemie) {
+
+        const keyframes = [
+            {transform: `translateY(0)`},
+            {transform: `translateY(900px)`} // 8030px
+        ];
+
+        const options = {
+            duration: this.cont,
+            fill: "forwards"
+        }
+
+        const animation = () => {
+            enemie.animate(keyframes, options); // tese
+        }
+
+        setTimeout(animation, 500);
+    }
+
+    spawnEnemis() {
+        // timeout : repete uma vez
+        // interval: repete com intervalod
+        
+
+
+        var randomTimer = Math.floor(Math.random() * (2000 - 1000 + 1) + 100);
+        // var randomCar = Math.floor(Math.random() * (4 - 0 + 1));
+        var randomCar;
+
+        // this.test[randomCar] = false;
+
+        
+        
+        let tentativas = 0;
+        const limiteTentativas = 1000; // Define um limite máximo de tentativas
+
+
+
+        do {    
+            randomCar = Math.floor(Math.random() * (4 - 0 + 1));
+            console.log(this.test[randomCar], randomCar);
+
+            // tentativas++;
+            // if (tentativas >= limiteTentativas) {
+            //     // Saia do loop se o limite máximo de tentativas for atingido
+            //     break;
+            // }
+        } while(!this.test[randomCar])
+ 
+        test2(this.test, randomCar, this.cont);
+        console.log(randomCar, randomTimer);
+        console.log(this.test);
+
+        
+
+        function test2(test, b, timer) {
+            if(test[b]) {
+                test[b] = false
+
+                setTimeout(() => {
+                    test[b] = true;
+                }, 500 + timer);
+            } 
+        } 
+    
+
+
+        setTimeout(() => {
+            // this.enemiesBG.innerHTML += `<img class="enemieCar" src="./sprites//spriteEnemy.png" alt="enemie">`
+            
+            const enemies = this.enemiesBG.querySelectorAll("img"); 
+            // const lastEnemie = enemies[enemies.length - 1];
+            // console.log(lastEnemie);
+            
+            this.moveEnemie(enemies[randomCar]);
+
+            if(pause)
+                this.spawnEnemis();
+        }, randomTimer);
+
+        //const wid = getComputedStyle(this.enemiesBG).getPropertyValue("width");
+        // console.log(wid);
     }
 }
