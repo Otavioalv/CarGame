@@ -213,8 +213,6 @@ class Enemies {
     spawnEnemis() {
         // timeout : repete uma vez
         // interval: repete com intervalod
-        const etzst  = 345r;
-
 
         var randomTimer = Math.floor(Math.random() * (2000 - 1000 + 1) + 100); // 2000 1000 100
     
