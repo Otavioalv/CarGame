@@ -40,7 +40,7 @@
         </div>
     </section>
     
-    <section class="menu">
+    <section class="menu" id="Imenu">
         
         <div class="menuHome">
             <div class="menuHome-instruction_keyboard">
@@ -63,32 +63,26 @@
             <script>
                 const instructionKey = document.getElementById("ImenuHome-instruction_keyboard--btn");
                 const keyboards = instructionKey.querySelectorAll("div");
+                const menu = document.getElementById("Imenu");
 
 
-                
-                if(keyboards[0].style.animationPlayState == "paused") {
-                    keyboards[0].style.animationPlayState = "running";
-                    keyboards[2].style.animationPlayState = "paused";
-                    console.log("esquerda");
-                    
-                } else {
-                    keyboards[2].style.animationPlayState = "running";
-                    keyboards[0].style.animationPlayState = "paused";
-                    console.log("direita");
-                }
-
-                setInterval(() => {
+                const stateAnimation = () => {
                     if(keyboards[0].style.animationPlayState == "paused") {
                         keyboards[0].style.animationPlayState = "running";
                         keyboards[2].style.animationPlayState = "paused";
-                        console.log("esquerda");
+                        
                     } else {
                         keyboards[2].style.animationPlayState = "running";
                         keyboards[0].style.animationPlayState = "paused";
-                        console.log("direita");
-                    }
+                    }    
 
-                }, 1500)
+                    if(menu.style.display === "none") {
+                        clearInterval(intervalAnimation);
+                    }
+                }
+                
+                stateAnimation();
+                const intervalAnimation = setInterval(stateAnimation, 1500)
             </script>
         </div>
 

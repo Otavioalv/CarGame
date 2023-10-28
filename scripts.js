@@ -9,8 +9,7 @@ function start() {
     const playerElement = document.getElementById("iPlayer"); // player
     const countCarElement = document.getElementById("iCountCar");
     const enemiesElement = document.querySelector(".enemies");
-
-    const startBtnElement = document.getElementById("iStartBtn");
+    const startMenuElement = document.getElementById("Imenu");
 
 
     const scenary = new Scenary(scenaryElement, delay, timer); // cenary element, velocity
@@ -20,7 +19,8 @@ function start() {
 
     const collision = new Collision(playerElement, enemiesElement);
 
-    // startBtnElement.style.display = "none";
+    startMenuElement.style.display = "none";
+    
     scenary.animate();
     bar.bar();
 
