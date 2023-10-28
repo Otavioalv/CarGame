@@ -17,6 +17,9 @@ function start() {
     const player = new Player(playerElement, 3, {'L': 118, 'R': 332}); // (elemento Playe, velocidade car, parede esqueda e direita em objeto)
     const bar = new CountBar(countCarElement, delay, timer); // elemento carro,  velMesmo do Scenary, duração 
     const enemies = new Enemies(enemiesElement, delay);
+
+    const collision = new Collision(playerElement, enemiesElement);
+
     // startBtnElement.style.display = "none";
     scenary.animate();
     bar.bar();
@@ -27,7 +30,13 @@ function start() {
         player.move();
     }
 
-    enemies.spawnEnemis();
+    
+    setTimeout(() => {
+        enemies.spawnEnemis();
+    }, delay);
+    // enemies.spawnEnemis();
+
+    collision.collision();
 }
 
 
@@ -250,5 +259,45 @@ class Enemies {
             if(pause)
                 this.spawnEnemis();
         }, randomTimer);
+    }
+}
+
+class Collision {
+    constructor(car, enemies) {
+        this.car = car;
+        this.enemies = enemies;
+    }
+
+    collision() {
+        // console.log(this.car);
+        // console.log(this.enemies);
+
+        
+        const carTest = this.enemies.querySelectorAll("img");
+        
+        const playerPosition = this.car.getBoundingClientRect();
+        const enemiePosition = carTest[2].getBoundingClientRect();
+
+        if (
+            playerPosition.left < enemiePosition.left + enemiePosition.width &&
+            playerPosition.left + playerPosition.width > enemiePosition.left &&
+            
+            playerPosition.top < enemiePosition.top + enemiePosition.height &&
+            playerPosition.top + playerPosition.height > enemiePosition.top
+        ) {
+        // Há colisão entre os carros
+            // console.log("Colisão detectada!");
+            console.log(playerPosition, enemiePosition);
+
+            console.log(`Pl < El + Ew -- Pl: ${playerPosition.left} | El + Ew: ${enemiePosition.left + enemiePosition.width}`);
+            console.log(`Pl + Pw > El -- Pl: ${playerPosition.left + playerPosition.width} | El + Ew: ${enemiePosition.left}`);
+
+        } 
+        // else {
+        //     console.log("Sem colisão.");
+        // }   
+
+        
+        requestAnimationFrame(() => this.collision());
     }
 }

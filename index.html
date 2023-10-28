@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,12 +39,63 @@
         <div class="hud">
         </div>
     </section>
+    
+    <section class="menu">
+        
+        <div class="menuHome">
+            <div class="menuHome-instruction_keyboard">
+                
+                <div class="menuHome-instruction_keyboard--car">
+                    <img src="./sprites/spriteCountCar.png" alt="mini-car" >
+                </div>
 
+                <div class="menuHome-instruction_keyboard--btn" id="ImenuHome-instruction_keyboard--btn">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <h1>Press button to start</h1>
+            <button id="iStartBtn" class="startBtn" onclick="start()">START</button>
+
+            <script>
+                const instructionKey = document.getElementById("ImenuHome-instruction_keyboard--btn");
+                const keyboards = instructionKey.querySelectorAll("div");
+
+
+                
+                if(keyboards[0].style.animationPlayState == "paused") {
+                    keyboards[0].style.animationPlayState = "running";
+                    keyboards[2].style.animationPlayState = "paused";
+                    console.log("esquerda");
+                    
+                } else {
+                    keyboards[2].style.animationPlayState = "running";
+                    keyboards[0].style.animationPlayState = "paused";
+                    console.log("direita");
+                }
+
+                setInterval(() => {
+                    if(keyboards[0].style.animationPlayState == "paused") {
+                        keyboards[0].style.animationPlayState = "running";
+                        keyboards[2].style.animationPlayState = "paused";
+                        console.log("esquerda");
+                    } else {
+                        keyboards[2].style.animationPlayState = "running";
+                        keyboards[0].style.animationPlayState = "paused";
+                        console.log("direita");
+                    }
+
+                }, 1500)
+            </script>
+        </div>
+
+        
+    </section>
     <script src="./scripts.js"></script>
 </body>
-
-<button id="iStartBtn" class="startBtn" onclick="start()">start</button>
 <!-- <button id="iStopBtn" class="stopBtn" onclick="stopp()">stop</button> -->
-
 
 </html>
