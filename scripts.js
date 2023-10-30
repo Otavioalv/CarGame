@@ -1,7 +1,7 @@
 var pause = true; // false 
 var movement = true;
 var finished = false;
-const timer = 6000;
+const timer = 60000;
 const delay = 1500;
 
 function start() {
