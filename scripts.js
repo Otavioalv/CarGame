@@ -15,11 +15,11 @@ function start() {
     const scenary = new Scenary(scenaryElement, delay, timer); // cenary element, velocity
     const player = new Player(playerElement, 3, {'L': 118, 'R': 332}); // (elemento Playe, velocidade car, parede esqueda e direita em objeto)
     const bar = new CountBar(countCarElement, delay, timer); // elemento carro,  velMesmo do Scenary, duração 
-    const enemies = new Enemies(enemiesElement, delay);
+    const enemies = new Enemies(enemiesElement, delay); 
+    const menu = new Menu(startMenuElement);
+    const collision = new Collision(playerElement, enemiesElement, menu);
 
-    const collision = new Collision(playerElement, enemiesElement);
-
-    startMenuElement.style.display = "none";
+    menu.displayNone();
     
     scenary.animate();
     bar.bar();
@@ -36,7 +36,7 @@ function start() {
     }, delay);
     // enemies.spawnEnemis();
 
-    collision.collision();
+    collision.collisionDetection();
 }
 
 
@@ -263,41 +263,118 @@ class Enemies {
 }
 
 class Collision {
-    constructor(car, enemies) {
+    constructor(car, enemies, menu) {
         this.car = car;
         this.enemies = enemies;
+        this.menu = menu;
     }
 
-    collision() {
-        // console.log(this.car);
-        // console.log(this.enemies);
-
-        
-        const carTest = this.enemies.querySelectorAll("img");
-        
+    collision(carEnemies) {
         const playerPosition = this.car.getBoundingClientRect();
-        const enemiePosition = carTest[2].getBoundingClientRect();
+        const enemiePosition = carEnemies.getBoundingClientRect();
 
-        if (
+        return (
             playerPosition.left < enemiePosition.left + enemiePosition.width &&
             playerPosition.left + playerPosition.width > enemiePosition.left &&
-            
             playerPosition.top < enemiePosition.top + enemiePosition.height &&
             playerPosition.top + playerPosition.height > enemiePosition.top
-        ) {
-        // Há colisão entre os carros
-            // console.log("Colisão detectada!");
-            console.log(playerPosition, enemiePosition);
+        )
+    }
 
-            console.log(`Pl < El + Ew -- Pl: ${playerPosition.left} | El + Ew: ${enemiePosition.left + enemiePosition.width}`);
-            console.log(`Pl + Pw > El -- Pl: ${playerPosition.left + playerPosition.width} | El + Ew: ${enemiePosition.left}`);
-
-        } 
-        // else {
-        //     console.log("Sem colisão.");
-        // }   
-
+    collisionDetection() {
+        const carEnemies = this.enemies.querySelectorAll("img");
         
-        requestAnimationFrame(() => this.collision());
+        for(var i = 0; i < carEnemies.length; i++) {
+            if(this.collision(carEnemies[i])){
+                this.menu.gameover();
+                this.menu.displayFlex();
+            }
+        }
+
+        requestAnimationFrame(() => this.collisionDetection());
+    }
+}
+
+class Menu {
+    constructor(menuContainer) {
+        this.menuContainer = menuContainer
+    }
+
+    gameover() {
+        this.menuContainer.innerHTML = `
+        <div class="menuGameover">
+            <h1>Game Over</h1>
+            <button class="startBtn" onclick="location.reload()">Restart</button>
+        </div>`;
+
+        pause = false;
+
+        const highestId = window.setTimeout(() => {
+            for (let i = highestId; i >= 0; i--) {
+              window.clearInterval(i);
+            }
+        }, 0);
+    }
+
+    start() {
+        this.menuContainer.innerHTML = `<div class="menuHome">
+        <div class="menuHome-instruction_keyboard">
+            
+            <div class="menuHome-instruction_keyboard--car">
+                <img src="./sprites/spriteCountCar.png" alt="mini-car" >
+            </div>
+
+            <div class="menuHome-instruction_keyboard--btn" id="ImenuHome-instruction_keyboard--btn">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <h1>Press button to start</h1>
+        <button id="iStartBtn" class="startBtn" onclick="start()">START</button>
+
+        <script>
+            const instructionKey = document.getElementById("ImenuHome-instruction_keyboard--btn");
+            const keyboards = instructionKey.querySelectorAll("div");
+            const menu = document.getElementById("Imenu");
+
+
+            const stateAnimation = () => {
+                /* if(keyboards[0].style.animationPlayState == "paused") {
+                    keyboards[0].style.animationPlayState = "running";
+                    keyboards[2].style.animationPlayState = "paused";
+                    
+                } else {
+                    keyboards[2].style.animationPlayState = "running";
+                    keyboards[0].style.animationPlayState = "paused";
+                } */
+                
+                if(keyboards[2].style.animationName != "instructionKeyboard") {
+                    keyboards[2].style.animationName = "instructionKeyboard";
+                    keyboards[0].style.animationName = "none";
+                } else {
+                    keyboards[0].style.animationName = "instructionKeyboard";
+                    keyboards[2].style.animationName = "none";
+                }  
+
+                if(menu.style.display === "none") {
+                    clearInterval(intervalAnimation);
+                }
+            }
+            
+            stateAnimation();
+            const intervalAnimation = setInterval(stateAnimation, 1500)
+        </script>
+    </div>`;
+    }
+
+    displayNone() {
+        this.menuContainer.style.display = "none";
+    }
+
+    displayFlex() {
+        this.menuContainer.style.display = "flex";
     }
 }
