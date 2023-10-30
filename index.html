@@ -38,6 +38,7 @@
             </div>
         </div>
         <div class="hud">
+            
         </div>
     </section>
     
@@ -68,15 +69,6 @@
 
 
                 const stateAnimation = () => {
-                    /* if(keyboards[0].style.animationPlayState == "paused") {
-                        keyboards[0].style.animationPlayState = "running";
-                        keyboards[2].style.animationPlayState = "paused";
-                        
-                    } else {
-                        keyboards[2].style.animationPlayState = "running";
-                        keyboards[0].style.animationPlayState = "paused";
-                    } */
-                    
                     if(keyboards[2].style.animationName != "instructionKeyboard") {
                         keyboards[2].style.animationName = "instructionKeyboard";
                         keyboards[0].style.animationName = "none";
