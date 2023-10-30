@@ -67,14 +67,22 @@
 
 
                 const stateAnimation = () => {
-                    if(keyboards[0].style.animationPlayState == "paused") {
+                    /* if(keyboards[0].style.animationPlayState == "paused") {
                         keyboards[0].style.animationPlayState = "running";
                         keyboards[2].style.animationPlayState = "paused";
                         
                     } else {
                         keyboards[2].style.animationPlayState = "running";
                         keyboards[0].style.animationPlayState = "paused";
-                    }    
+                    } */
+                    
+                    if(keyboards[2].style.animationName != "instructionKeyboard") {
+                        keyboards[2].style.animationName = "instructionKeyboard";
+                        keyboards[0].style.animationName = "none";
+                    } else {
+                        keyboards[0].style.animationName = "instructionKeyboard";
+                        keyboards[2].style.animationName = "none";
+                    }  
 
                     if(menu.style.display === "none") {
                         clearInterval(intervalAnimation);

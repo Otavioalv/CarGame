@@ -228,7 +228,7 @@ html {
     grid-column: 3;
 
     animation: instructionKeyboard 1.5s linear infinite;
-    animation-play-state: paused;
+    /* animation-play-state: paused; */
 }
 
 .menuHome-instruction_keyboard--btn div:nth-child(3)::after {
