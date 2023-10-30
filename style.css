@@ -15,6 +15,7 @@
     --sizeRowInstructionCar: 30px;
     --topRowInstructionCar: 40px;
     --distanceRowInstructionCar: 90px;
+    --widthSVG: 40px;
 }
 
 html {
@@ -96,6 +97,18 @@ html {
     width: var(--widthEnemie);
     /* left: 100px;  */
 }
+
+.finished {
+    position: absolute;
+    top: 10px;
+    padding: 0 120px 0 120px;
+}
+
+.finishedBar {
+    position: relative;
+    width: 252px;
+}
+
 /* -----------------end scenary---------------- */
 /* hud */
 .hud {
@@ -124,11 +137,39 @@ html {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.menuHome, .menuGameover{
+.menuHome{
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.menuMidia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3em auto;
+}
+
+.menuHome p{
+    font-size: 1.3em;
+}
+
+.menuHome svg {
+    width: var(--widthSVG);
+    color: black;
+    margin: 0 1em;
+}
+
+.menuHome svg:hover {
+    animation: svgHover 1s linear infinite;
+}
+
+.menuHome ul {
+    position: relative;
+    list-style: none;
+    display: flex;
+    padding: 0;
 }
 
 .startBtn {
@@ -324,30 +365,22 @@ html {
 }
 
 @keyframes instructionCar {
-    /* 0% {
-        left: 0;
-    }
-    20% {
-        left: 100px;
-    }
-    40% {
-        left: 0;
-    }
-    60% {
-        right: 0px;
-    }
-    80% {
-        right: 100px;
-    } 
-    100% {
-        left: 0;
-    } */
     0% {
         left: 0;
     } 50% {
         left: 275px;
     } 100% {
         left: 0;
+    }
+}
+
+@keyframes svgHover {
+    0% {
+        width: var(--widthSVG);
+    } 50% {
+        width: calc(var(--widthSVG) + 10px);
+    } 100% {
+        width: var(--widthSVG);
     }
 }
 /* end menu */
