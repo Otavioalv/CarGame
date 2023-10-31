@@ -61,7 +61,7 @@ html {
 .scenary {
     display: flex;
     flex-direction: column-reverse;
-    background-color: aqua;
+    background-color: #8d8980;
     width: var(--scenaryWidth);
     overflow: hidden;
 }
