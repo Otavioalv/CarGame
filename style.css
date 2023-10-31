@@ -453,3 +453,11 @@ html {
     }
 }
 /* end menu */
+
+
+@media(max-width: 771px){
+    .screen {
+        width: 400px;
+        height: 400px;   
+    }
+}
