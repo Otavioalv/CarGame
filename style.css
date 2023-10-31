@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/8bit-wonder');
+@import url(http://fonts.googleapis.com/css?family=Press+Start+2P);
 
 :root {
     --tamanho-1: 24px;
@@ -143,10 +145,52 @@ html {
 /* -----------------end scenary---------------- */
 /* hud */
 .hud {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
     background-color: rgb(0, 0, 0);
     border: solid white;
     border-width: 1px 1px 1px 0;
     width: var(--hudWidth);
+    color: white;
+    font-family: '8BIT WONDER';
+    
+}
+
+.hud h2 {
+    font-size: 1em;
+}
+
+.playerPerson {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+}
+
+.playerPerson img {
+    position: relative;
+    height: 100%;
+    right: 150px;
+}
+
+.fuel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fuel-BarBG {
+    width: 150px;
+    height: 20px;
+    border: white solid 1px;
+    background-image: linear-gradient(to right, #080, #ff0, #f00);
+}
+
+.fuel-Bar {
+    background-color: black;
+    width: 0;
+    height: 100%;
 }
 /* end hud */
 
@@ -159,7 +203,7 @@ html {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    
+    /* flez */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -232,16 +276,10 @@ html {
 }
 
 .menuHome-instruction_keyboard--btn {
-    /* display: flex;
-
-    align-items: center;
-    justify-content: center; */
-    
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-content: center;
     margin: 0 50px;
-    /* background-color: aqua; */
 }
 
 .menuHome-instruction_keyboard--btn div {
@@ -249,7 +287,6 @@ html {
     border: 2px solid black;
     height: 40px;
     width: 45px;
-    
     
     box-shadow: var(--keyboardInstructionShadown) var(--keyboardInstructionShadown) 0 black;
     margin: .4em;
@@ -275,7 +312,6 @@ html {
     grid-column: 1;
 
     animation: instructionKeyboard 1.5s linear infinite;
-    /* animation-delay: 1.5s; */
     animation-play-state:running;
 }
 

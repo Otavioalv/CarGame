@@ -11,10 +11,14 @@ function start() {
     const countCarElement = document.getElementById("iCountCar");
     const enemiesElement = document.querySelector(".enemies");
     const startMenuElement = document.getElementById("Imenu");
+    const fuelBarElement = document.getElementById("iFuel-bar");
+    const speedometerElement = document.getElementById("iSpeedometer");
+    const personPlayer = document.getElementById("iPlayerPersonSprite");
+
 
 
     const scenary = new Scenary(scenaryElement, delay, timer); // cenary element, velocity
-    const player = new Player(playerElement, 3, {'L': 118, 'R': 332}); // (elemento Playe, velocidade car, parede esqueda e direita em objeto)
+    const player = new Player(playerElement, 3, {'L': 118, 'R': 332}, timer, fuelBarElement, speedometerElement, delay, personPlayer); // (elemento Playe, velocidade car, parede esqueda e direita em objeto)
     const bar = new CountBar(countCarElement, delay, timer); // elemento carro,  velMesmo do Scenary, duração 
     const menu = new Menu(startMenuElement);
     const enemies = new Enemies(enemiesElement, delay, timer, menu); 
@@ -97,10 +101,15 @@ class Scenary {
 
 
 class Player {
-    constructor(player, vel, wall) {
+    constructor(player, vel, wall, timer, fuel, speedometer, delay, persoPlayer) {
         this.player = player;
         this.vel = vel;
-        this.wall = wall
+        this.wall = wall;
+        this.timer = timer;
+        this.fuel = fuel;
+        this.speedometer = speedometer;
+        this.delay = delay;
+        this.persoPlayer = persoPlayer;
     }
 
     move() {
@@ -108,19 +117,26 @@ class Player {
             parede esquerda: 118px
             parede direita: 332px
         */
-        moveLR(this.player, this.vel, this.wall);
 
-        function moveLR(player, vel, wall) {        
+        this.fuelBar();
+
+        moveLR(this.player, this.vel, this.wall, this.persoPlayer);
+
+        function moveLR(player, vel, wall, personPlayer) {        
                 var playerPosition = parseFloat(getComputedStyle(player).getPropertyValue("left"));
                 var isMovL = false;
                 var isMovR = false;
 
 
                 function movePlayer(direction) {
-                        if(direction === "L" && player.offsetLeft > wall.L /* && pause */) 
+                        if(direction === "L" && player.offsetLeft > wall.L /* && pause */) { 
                             playerPosition -= vel;
-                        else if(direction === "R" && player.offsetLeft < wall.R /* && pause */) 
+                            // personPlayer.style.right = "0px"
+                        }
+                        else if(direction === "R" && player.offsetLeft < wall.R /* && pause */)  {
                             playerPosition += vel;
+                            // personPlayer.style.right = "200px"
+                        }
 
                     player.style.left = playerPosition + "px";
                     
@@ -129,19 +145,26 @@ class Player {
         
 
                 const keyDownHandler = (event) => {
-                    if(event.key === "ArrowLeft") 
+                    if(event.key === "ArrowLeft") {
                         isMovL = true;
+                        personPlayer.style.right = "0px";
+                    }
                     
-                    if(event.key === "ArrowRight")
+                    if(event.key === "ArrowRight") {
                         isMovR = true;
+                        personPlayer.style.right = "300px";
+                    }
                 };
 
                 const keyUpHandler = (event) => {
                     if(event.key === "ArrowLeft") {
                         isMovL = false;
+                        personPlayer.style.right = "150px";
                     }
-                    if(event.key === "ArrowRight") 
+                    if(event.key === "ArrowRight") {
                         isMovR = false;
+                        personPlayer.style.right = "150px";
+                    }
                 };
 
                
@@ -160,6 +183,40 @@ class Player {
                 }
                 loop();
         }       
+    }
+
+    fuelBar() {
+        var qtd = 0; 
+        
+        const fuelNav = setInterval(() => {
+            qtd++;
+            
+            this.fuel.style.width =  `${qtd * 100 / 60}%`;
+
+            console.log(qtd * 100 / 60);
+
+            if(qtd >= this.timer / 1000) {
+                clearInterval(fuelNav);
+            }
+        }, 1000);
+
+        this.speedometerVel();
+    }
+
+    speedometerVel() {  
+        var speedCont = 0;
+        
+        setTimeout(() => {
+            const intervalSpeed = setInterval(() => {
+                speedCont ++;
+                this.speedometer.innerText = speedCont
+    
+                if(speedCont >= 350) {
+                    clearInterval(intervalSpeed);
+                }
+    
+            }, 10)
+        }, this.delay);
     }
 }
 
